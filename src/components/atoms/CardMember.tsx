@@ -9,16 +9,17 @@ interface CardMemberProps {
 
 export default function CardMemberComponent({ trombiMember }: CardMemberProps) {
 	return (
-		<div className="w-1/2 rounded-md shadow-lg">
+		<div className="bg-white w-1/4 rounded-lg overflow-hidden shadow-lg">
 			<Image
 				className="mx-auto rounded-full"
 				src="/profile-picture.png"
 				alt="Profile picture"
-				width={64}
-				height={64}
+				width={128}
+				height={128}
 			/>
-			<div className="text-center text-white bg-gray-800 p-4">
-				<p>{trombiMember.name}</p>
+			<div className="h-full text-center text-white bg-gray-800 p-4">
+				<p className="text-lg">{trombiMember.name}</p>
+				<p className="text-sm">azeazeaz</p>
 			</div>
 		</div>
 	);

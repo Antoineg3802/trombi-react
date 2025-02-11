@@ -17,7 +17,7 @@ export default function Home() {
 	}, [!trombis]);
 
 	return (
-		<div className="h-screen w-screen flex p-4 bg-white relative">
+		<div className="h-full w-screen flex p-4 bg-background relative">
 			{trombis.length != 0 ? (
 				<div className="h-full w-full">
 					<h1 className="text-xl">Mes trombinoscopes</h1>
