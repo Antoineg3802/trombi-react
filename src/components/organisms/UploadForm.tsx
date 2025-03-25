@@ -88,7 +88,6 @@ export default function UploadModal() {
 		try {
 			await storeImageData(data);
 			console.log("Données sauvegardées dans IndexedDB");
-			// Réinitialisation des champs et fermeture de la modale
 			setFile(null);
 			setPreview(null);
 			setNomPrenom("");

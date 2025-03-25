@@ -2,6 +2,7 @@
 
 import { Trombi } from "@/datas/trombis";
 import GroupContainer from "../molecules/GroupContainer";
+import DisplayModalComponent from "../atoms/DisplayModal";
 
 interface TrombiContainerProps {
 	trombi: Trombi;
@@ -17,6 +18,7 @@ export default function TrombiContainerComponent({
 				{trombi.groups.map((group, index) => (
 					<GroupContainer key={index} trombiGroup={group} />
 				))}
+				<DisplayModalComponent text="Add a group" target="group" />
 			</div>
 		</div>
 	);

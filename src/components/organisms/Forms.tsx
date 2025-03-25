@@ -1,7 +1,10 @@
-// FormComponent.tsx
+"use client";
+
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import localforage from "localforage";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -15,26 +18,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Trombi, Trombigroup } from "@/datas/trombis";
 
-interface FormProps {
-	formTheme: "trombi" | "group" | "member";
-}
+// 🔹 **Initialisation de localForage**
+localforage.config({
+	name: "trombisDB",
+	storeName: "trombis",
+});
 
 const formSchemaTrombi = z.object({
 	name: z.string().min(2).max(50),
 	description: z.string().min(2).max(255),
 });
 
-const formSchemaGroup = z.object({
-	name: z.string().min(2).max(50),
-	description: z.string().min(2).max(255),
-});
+export default function FormComponent() {
+	const router = useRouter();
 
-const formMemberGroup = z.object({
-	name: z.string().min(2).max(50),
-	description: z.string().min(2).max(255),
-});
-
-export default function FormComponent({ formTheme }: FormProps) {
+	// 🔹 **Initialisation du formulaire avec react-hook-form et zod**
 	const formTrombi = useForm<z.infer<typeof formSchemaTrombi>>({
 		resolver: zodResolver(formSchemaTrombi),
 		defaultValues: {
@@ -43,25 +41,11 @@ export default function FormComponent({ formTheme }: FormProps) {
 		},
 	});
 
-	const formGroup = useForm<z.infer<typeof formSchemaGroup>>({
-		resolver: zodResolver(formSchemaGroup),
-		defaultValues: {
-			name: "",
-			description: "",
-		},
-	});
-
-	const formMember = useForm<z.infer<typeof formMemberGroup>>({
-		resolver: zodResolver(formMemberGroup),
-		defaultValues: {
-			name: "",
-			description: "",
-		},
-	});
-
-	function onSubmit(values: z.infer<typeof formSchemaTrombi>) {
+	// 🔹 **Gestion de la soumission du formulaire**
+	async function onSubmit(values: z.infer<typeof formSchemaTrombi>) {
 		const nameSimplified = values.name.toLowerCase().replace(/ /g, "-");
 		const groups: Trombigroup[] = [];
+
 		const newTrombi: Trombi = {
 			name: values.name,
 			nameSimplified,
@@ -69,141 +53,62 @@ export default function FormComponent({ formTheme }: FormProps) {
 			description: values.description,
 		};
 
-		localStorage.setItem("trombis", JSON.stringify([newTrombi]));
-		window.location.href = `/trombi/${nameSimplified}`;
-	}
-	console.log('there')
-	console.log(formTheme)
+		// 🔹 **Stockage du trombi dans IndexedDB via localForage**
+		await localforage.setItem(`trombi-${nameSimplified}`, newTrombi);
 
-	switch (formTheme) {
-		case "trombi":
-			return <TrombiForm form={formTrombi} onSubmit={onSubmit} />;
-		case "group":
-			return <GroupForm form={formGroup} onSubmit={onSubmit} />;
-		case "member":
-			return <MemberForm form={formMember} onSubmit={onSubmit} />;
-		default:
-			return <div></div>;
+		// 🔹 **Redirection vers la page du trombi**
+		router.push(`/trombi/${nameSimplified}`);
 	}
+
+	return (
+		<Form {...formTrombi}>
+			<form
+				onSubmit={formTrombi.handleSubmit(onSubmit)}
+				className="space-y-4"
+			>
+				<h3 className="text-lg font-semibold">Ajouter un Trombi</h3>
+
+				<FormField
+					control={formTrombi.control}
+					name="name"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Nom du trombi</FormLabel>
+							<FormControl>
+								<Input
+									placeholder="Ex: Ynov's trombi"
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={formTrombi.control}
+					name="description"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Description</FormLabel>
+							<FormControl>
+								<Input
+									placeholder="Ex: Inside organisation in Ynov"
+									{...field}
+								/>
+							</FormControl>
+							<FormDescription>
+								Décrivez brièvement votre trombi.
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<Button type="submit" className="w-full">
+					Créer le Trombi
+				</Button>
+			</form>
+		</Form>
+	);
 }
-
-const TrombiForm = ({ form, onSubmit }: { form: any; onSubmit: any }) => {
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<h3>Add a trombi</h3>
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Firstname</FormLabel>
-							<FormControl>
-								<Input placeholder="John" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Description</FormLabel>
-							<FormControl>
-								<Input placeholder="Web Developer" {...field} />
-							</FormControl>
-							<FormDescription>
-								Describe the post ou la personne en quelques
-								mots.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type="submit">Submit</Button>
-			</form>
-		</Form>
-	);
-};
-
-const GroupForm = ({ form, onSubmit }: { form: any; onSubmit: any }) => {
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<h3>Add a group</h3>
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Firstname</FormLabel>
-							<FormControl>
-								<Input placeholder="John" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Description</FormLabel>
-							<FormControl>
-								<Input placeholder="Web Developer" {...field} />
-							</FormControl>
-							<FormDescription>
-								Describe the group en quelques mots.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type="submit">Submit</Button>
-			</form>
-		</Form>
-	);
-};
-
-const MemberForm = ({ form, onSubmit }: { form: any; onSubmit: any }) => {
-	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<h3>Add a member</h3>
-				<FormField
-					control={form.control}
-					name="name"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Firstname</FormLabel>
-							<FormControl>
-								<Input placeholder="John" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Description</FormLabel>
-							<FormControl>
-								<Input placeholder="Web Developer" {...field} />
-							</FormControl>
-							<FormDescription>
-								Describe the group en quelques mots.
-							</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type="submit">Submit</Button>
-			</form>
-		</Form>
-	);
-};

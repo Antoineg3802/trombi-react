@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../../globals.css";
 import { ModalProvider } from "@/components/providers/ModalProvider";
 
 const geistSans = Geist({
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title: "My Trombi",
-	description: "Créer un trombinoscope",
+	description: "Gérer mon trombi",
 };
 
 export default function RootLayout({

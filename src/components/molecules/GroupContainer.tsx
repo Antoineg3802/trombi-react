@@ -2,8 +2,6 @@
 
 import { Trombigroup } from "@/datas/trombis";
 import CardMemberComponent from "../atoms/CardMember";
-import EmptyMemberComponent from "../atoms/EmptyMember";
-import UploadModal from "../organisms/UploadForm";
 
 interface GroupContainerProps {
     trombiGroup: Trombigroup
@@ -17,7 +15,6 @@ export default function GroupContainerComponent({trombiGroup}: GroupContainerPro
                 {trombiGroup.members.map((member, index) => (
                     <CardMemberComponent key={index} trombiMember={member} />
                 ))}
-                <UploadModal />
             </div>
         </div>
     );
