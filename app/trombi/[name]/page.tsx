@@ -9,11 +9,12 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import SortableItem from "@/components/atoms/SortableItem";
+import React from "react";
 
 interface Member {
 	id: string;
 	name: string;
-	image?: string | null; // image stockée directement sous forme d'URL data
+	image?: string | null;
 }
 
 interface Group {
@@ -34,7 +35,7 @@ localforage.config({
 });
 
 export default function TrombiPage() {
-	const { name } = { ...useParams<{ name: string }>() };
+	const { name } = useParams<{ name: string }>();
 	const [trombiData, setTrombiData] = useState<Trombi | null>(null);
 	const [newGroupName, setNewGroupName] = useState("");
 	const [newMemberName, setNewMemberName] = useState("");
@@ -230,7 +231,7 @@ export default function TrombiPage() {
 						type="file"
 						accept="image/*"
 						onChange={handleMemberFileChange}
-						className="border rounded p-2 w-fit"
+						className="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 w-fit"
 					/>
 					{memberPreview && (
 						<img

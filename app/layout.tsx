@@ -26,7 +26,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`w-dvw h-dvh bg-background ${geistSans.variable} ${geistMono.variable} antialiased text-black font-medium relative`}
+				className={`w-dvw h-dvh bg-background ${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-blue-50 to-indigo-50 text-black font-medium relative`}
 			>
 				<ModalProvider>{children}</ModalProvider>
 			</body>

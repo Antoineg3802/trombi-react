@@ -34,7 +34,7 @@ export default function Home() {
 	return (
 		<div
 			className={cn(
-				"min-h-screen w-full bg-gradient-to-r from-blue-50 to-indigo-50 flex flex-col items-center relative py-12 px-4",
+				"min-h-screen w-full flex flex-col items-center relative py-12 px-4",
 				{ "select-none": isOpen }
 			)}
 		>
