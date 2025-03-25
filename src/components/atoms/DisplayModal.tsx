@@ -14,7 +14,7 @@ export default function DisplayModalComponent({ text, target }: DisplayModalProp
 	}
 
 	return (
-		<button className="flex items-center justify-center hover:bg-black/5 transition duration-200 rounded-lg p-4 hover:cursor-pointer" onClick={handleClick}>
+		<button className="bg-blue-500 text-white flex items-center justify-center gap-2 transition duration-200 rounded-xl p-4 hover:cursor-pointer" onClick={handleClick}>
 			<IconPlus
 				stroke={3}
 				height={24}

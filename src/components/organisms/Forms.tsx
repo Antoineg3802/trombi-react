@@ -66,33 +66,13 @@ export default function FormComponent() {
 					name="name"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Nom du trombi</FormLabel>
+							<FormLabel>Nom du trombinoscope</FormLabel>
 							<FormControl>
 								<Input
 									placeholder="Ex: Ynov's trombi"
 									{...field}
 								/>
 							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={formTrombi.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Description</FormLabel>
-							<FormControl>
-								<Input
-									placeholder="Ex: Inside organisation in Ynov"
-									{...field}
-								/>
-							</FormControl>
-							<FormDescription>
-								Décrivez brièvement votre trombi.
-							</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}

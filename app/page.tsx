@@ -5,6 +5,8 @@ import Link from "next/link";
 import localforage from "localforage";
 import { Trombi } from "@/datas/trombis";
 import DisplayModalComponent from "@/components/atoms/DisplayModal";
+import { cn } from "@/lib/utils";
+import { useModal } from "@/components/providers/ModalProvider";
 
 localforage.config({
 	name: "trombisDB",
@@ -13,11 +15,11 @@ localforage.config({
 
 export default function Home() {
 	const [trombis, setTrombis] = useState<Trombi[]>([]);
+	const { isOpen } = useModal();
 
 	useEffect(() => {
 		const loadTrombis = async () => {
 			const trombiList: Trombi[] = [];
-
 			await localforage.iterate((value, key) => {
 				if (key.startsWith("trombi-")) {
 					trombiList.push(value as Trombi);
@@ -30,28 +32,55 @@ export default function Home() {
 	}, []);
 
 	return (
-		<div className="h-full w-screen flex p-4 bg-background relative">
-			{trombis.length !== 0 ? (
-				<div className="h-full w-full">
-					<h1 className="text-xl font-bold mb-4">Mes Trombinoscopes</h1>
-					<div className="flex flex-wrap gap-4">
+		<div
+			className={cn(
+				"min-h-screen w-full bg-gradient-to-r from-blue-50 to-indigo-50 flex flex-col items-center relative py-12 px-4",
+				{ "select-none": isOpen }
+			)}
+		>
+			<header className="mb-12 text-center">
+				<h1 className="text-4xl font-extrabold text-gray-800">
+					Bienvenue sur My Trombi
+				</h1>
+				<p className="mt-3 text-lg text-gray-600">
+					Découvrez et gérez facilement vos trombinoscopes
+				</p>
+			</header>
+
+			{trombis.length ? (
+				<main className="w-full max-w-6xl px-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 						{trombis.map((trombi) => (
 							<Link
 								key={trombi.nameSimplified}
-								className="h-14 w-1/3 text-lg border-blue-700 border-2 rounded-lg p-4 bg-white text-blue-700 hover:bg-blue-700 hover:text-white transition"
-								href={`/trombi/${trombi.nameSimplified}`}
+								href={!isOpen ? `/trombi/${trombi.nameSimplified}`: {}}
+								className={cn(
+									"block p-6 bg-white rounded-xl shadow-md border border-transparent transition-colors",
+									{
+										"hover:cursor-pointer hover:border-blue-500 hover:shadow-lg": !isOpen,
+										"hover:cursor-default": isOpen,
+									}
+								)}
 							>
-								{trombi.name}
+								<h2 className="text-2xl font-semibold text-blue-500">
+									{trombi.name}
+								</h2>
 							</Link>
 						))}
 					</div>
-				</div>
+				</main>
 			) : (
-				<div className="h-8 w-1/2 bg-white flex items-center justify-center">
+				<div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md text-center text-gray-700">
 					Aucun trombi trouvé
 				</div>
 			)}
-			<DisplayModalComponent text="Ajouter un trombi" target="trombi" />
+
+			<div className="fixed bottom-8 right-8">
+				<DisplayModalComponent
+					text="Ajouter un trombi"
+					target="trombi"
+				/>
+			</div>
 		</div>
 	);
 }

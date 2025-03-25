@@ -33,9 +33,9 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
 		<ModalContext.Provider value={{ isOpen, showModal, hideModal }}>
 			{children}
 			{isOpen && (
-				<div className="absolute w-3/4 h-fit top-4 left-1/2 transform -translate-x-1/2 bottom-4 flex items-center justify-center border-2 border-blue-700 bg-blue-600">
+				<div className="absolute w-3/4 h-fit top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bottom-4 flex items-center justify-center border-2 bg-white rounded-lg shadow-lg p-4">
 					<div className="h-full w-full relative">
-						<FormComponent formTheme={formTheme} />
+						<FormComponent />
 						<button
 							className="absolute top-2 right-2 hover:cursor-pointer"
 							onClick={hideModal}
