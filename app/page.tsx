@@ -2,8 +2,8 @@
 
 import { Trombi } from "@/datas/trombis";
 import { useEffect, useState } from "react";
-import { IconPlus } from "@tabler/icons-react";
 import Link from "next/link";
+import DisplayModalComponent from "@/components/atoms/DisplayModal";
 
 export default function Home() {
 	const [trombis, setTrombis] = useState<Trombi[]>([]);
@@ -20,7 +20,7 @@ export default function Home() {
 		<div className="h-full w-screen flex p-4 bg-background relative">
 			{trombis.length != 0 ? (
 				<div className="h-full w-full">
-					<h1 className="text-xl">Mes trombinoscopes</h1>
+					<h1 className="text-xl">My trombinoscops</h1>
 					<div className="h-14 w-full flex flex-col gap-4">
 						{trombis.map((trombi, index) => (
 							<Link
@@ -36,17 +36,7 @@ export default function Home() {
 			) : (
 				<div className="h-8 w-1/2 bg-white">pas de trombi</div>
 			)}
-			<Link
-				href="/trombi/default"
-				className="group absolute right-4 bottom-4 bg-blue-700 text-white p-4 rounded-lg flex items-center space-x-2 hover:bg-blue-500"
-			>
-				<IconPlus
-					stroke={3}
-					height={24}
-					className="group-hover:rotate-90 transition-all duration-200"
-				/>
-				Créer un trombinoscope
-			</Link>
+			<DisplayModalComponent text="Add a trombi" target="trombi" />
 		</div>
 	);
 }
