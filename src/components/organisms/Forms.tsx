@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Trombi, Trombigroup } from "@/datas/trombis";
 
-// 🔹 **Initialisation de localForage**
 localforage.config({
 	name: "trombisDB",
 	storeName: "trombis",
@@ -31,8 +30,6 @@ const formSchemaTrombi = z.object({
 
 export default function FormComponent() {
 	const router = useRouter();
-
-	// 🔹 **Initialisation du formulaire avec react-hook-form et zod**
 	const formTrombi = useForm<z.infer<typeof formSchemaTrombi>>({
 		resolver: zodResolver(formSchemaTrombi),
 		defaultValues: {
@@ -41,7 +38,6 @@ export default function FormComponent() {
 		},
 	});
 
-	// 🔹 **Gestion de la soumission du formulaire**
 	async function onSubmit(values: z.infer<typeof formSchemaTrombi>) {
 		const nameSimplified = values.name.toLowerCase().replace(/ /g, "-");
 		const groups: Trombigroup[] = [];
@@ -53,10 +49,7 @@ export default function FormComponent() {
 			description: values.description,
 		};
 
-		// 🔹 **Stockage du trombi dans IndexedDB via localForage**
 		await localforage.setItem(`trombi-${nameSimplified}`, newTrombi);
-
-		// 🔹 **Redirection vers la page du trombi**
 		router.push(`/trombi/${nameSimplified}`);
 	}
 

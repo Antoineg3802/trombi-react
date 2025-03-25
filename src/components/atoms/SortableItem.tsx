@@ -17,7 +17,7 @@ const SortableItem = ({ id, children }: SortableItemProps) => {
 	};
 
 	return (
-		<div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+		<div ref={setNodeRef} className="w-1/3" style={style} {...attributes} {...listeners}>
 			{children}
 		</div>
 	);

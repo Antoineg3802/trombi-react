@@ -10,3 +10,18 @@ Utilisation des libs DND (Drag & Drop)
 - [ ] Tri par Nom (tri par catégorie)
 - [ ] Groupement des photos (catégorie)
 - [ ] Sortie en PDF
+
+## Installation
+
+Vous voulez installer le projet ? Rien de plus simple, il vous suffit de cloner le projet et d'installer les dépendances avec la commande suivante :
+
+```bash
+npm install
+```
+
+Et ensuite de lancer le projet avec la commande suivante :
+
+```bash
+npm run dev # Pour le mode développement
+npm run build # Pour le mode production
+```

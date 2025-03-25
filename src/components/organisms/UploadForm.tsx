@@ -9,16 +9,13 @@ interface ImageData {
 }
 
 export default function UploadModal() {
-	// État pour gérer l'affichage de la modale
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	// États pour le formulaire
 	const [file, setFile] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
 	const [nomPrenom, setNomPrenom] = useState<string>("");
 	const [infosComplementaires, setInfosComplementaires] =
 		useState<string>("");
 
-	// Gestion de la sélection du fichier image et création d'une prévisualisation
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		const selectedFile = e.target.files?.[0] || null;
 		if (selectedFile) {
@@ -31,7 +28,6 @@ export default function UploadModal() {
 		}
 	};
 
-	// Fonction pour créer ou ouvrir la base IndexedDB et y stocker les données
 	const storeImageData = async (data: ImageData): Promise<void> => {
 		return new Promise<void>((resolve, reject) => {
 			const request: IDBOpenDBRequest = window.indexedDB.open(
@@ -67,7 +63,6 @@ export default function UploadModal() {
 		});
 	};
 
-	// Gestion de la soumission du formulaire
 	const handleSubmit = async (
 		e: FormEvent<HTMLFormElement>
 	): Promise<void> => {
